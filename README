@@ -1,1 +1,10 @@
 The purpose of this program is to consume news about a stock symbol from the google RSS feed and provide sentiment analysis on consumed news.
+
+This program can currently:
+- Organize google stock RSS feed information
+- Connect to the motley fool website
+- Scrape the article from the connected website
+
+To do:
+- Sentiment analysis of article(looking at google natural language processing api)
+- Simple GUI to show amount of articles about a certain stock and census sentiment score 0 - 10 of the news.
