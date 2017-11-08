@@ -5,7 +5,7 @@ This program can currently:
 - Connect to the motley fool website
 - Scrape the article from the connected website
 - Added simple GUI
-![Alt text](newser.JPG?raw=true "Newser")
+![ScreenShot](https://raw.github.com/downtolearn/Newser/master/newser.JPG)
 
 To do:
 - Sentiment analysis of article(looking at google natural language processing api)
