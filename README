@@ -4,6 +4,8 @@ This program can currently:
 - Organize google stock RSS feed information
 - Connect to the motley fool website
 - Scrape the article from the connected website
+- Added simple GUI
+![Alt text](/newser.jpg?raw=true "Newser")
 
 To do:
 - Sentiment analysis of article(looking at google natural language processing api)
