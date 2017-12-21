@@ -8,7 +8,7 @@ from PyQt5.QtGui import QStandardItemModel, QStandardItem
 class CustomItemModel(QStandardItemModel):
     def __init__(self,parent=None):
         super(CustomItemModel,self).__init__()
-        self.setColumnCount(4)
+        self.setColumnCount(5)
         pass
 
 class CustomListView(QTableView):
@@ -49,7 +49,7 @@ class ParameterGrid(QWidget):
         listLabel = QLabel('Symbol(s): ')
         self.symbolEntry = QLineEdit()
         self.symbolEntry.textChanged.connect(self.updateSymbol)
-        startLabel = QLabel('Start Date: ')
+        startLabel = QLabel('Amount of News: ')
         self.startEntry = QLineEdit()
         self.startEntry.textChanged.connect(self.updateStart)
         endLabel = QLabel('End Date:')
@@ -81,17 +81,17 @@ class NewsList(CustomListView):
         super(NewsList,self).__init__(parent=parent)
         self.initUI()
         self.stocks = ['aapl','googl','ntfx','fb','amzn','tsla','intc','nvda','ibm','amd','chgg','msft','vsat','mu','el','aeiq']
-        self.fillModel('aapl')
+        self.fillModel('aapl',5)
         self.setModel(self.model)
 
         # self.show()
 
-    def update(self,symbol):
+    def update(self,symbol,num):
         if symbol in self.stocks:
-            self.fillModel(symbol)
+            self.fillModel(symbol,num)
 
-    def fillModel(self,symbol):
-        newsList = Newser.getStockNewsDict(self=Newser,symbol=symbol)
+    def fillModel(self,symbol,num):
+        newsList = Newser.getStockNewsDict(self=Newser,symbol=symbol,num=num)
         self.model.clear()
         for row,item in enumerate(newsList):
             itemList=[]
@@ -122,15 +122,16 @@ class MainLayout(QtWidgets.QMainWindow):
         self.initLayout()
         print('end')
 
-    def updateNews(self,symbol):
-        self.News.update(symbol)
+    def updateNews(self,symbol,num):
+        self.News.update(symbol,num)
 
     def setSymbol(self,text):
         self.symbol=text
-        self.updateNews(text)
+        self.updateNews(self.symbol,self.start)
 
-    def setStart(text):
+    def setStart(self,text):
         self.start=text
+        self.updateNews(self.symbol,self.start)
         # self.updateNews()
 
     def setEnd(text):

@@ -7,9 +7,9 @@ class Newser():
     def __init__():
         pass
 
-    def getRSSSoup(self,symbol):
+    def getRSSSoup(self,symbol,num):
         """Returns a soup object for the RSS of a stocl symbol"""
-        googleRSS = "https://finance.google.com/finance/company_news?q="+symbol+"&output=rss"
+        googleRSS = "https://finance.google.com/finance/company_news?q="+symbol+"&output=rss"+"&num="+str(num)
         r = urllib.request.urlopen(googleRSS).read()
         soup = BS(r,"lxml")
         return soup
@@ -57,13 +57,13 @@ class Newser():
         soup = BS(r,"lxml")
         return soup.find('section',aClass).text
 
-    def getStockNewsDict(self,symbol):
-        soup = self.getRSSSoup(self,symbol)
+    def getStockNewsDict(self,symbol,num):
+        soup = self.getRSSSoup(self,symbol,num)
         #returns a list of news dictionaries
         return self.getRSSList(self,soup)
 
 if __name__ == "__main__":
-    soup = getRSSSoup('GOOGL')
+    soup = getRSSSoup('GOOGL',50)
     newsList = getRSSList(soup)
     # printRSSList(newsList)
     sourceClassDict = dict()
