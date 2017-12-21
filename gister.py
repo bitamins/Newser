@@ -1,30 +1,43 @@
 import sys
 import logging
 from newser import Newser
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtWidgets import QWidget, QLabel, QLineEdit, QListView, QTableView, QTextEdit, QGridLayout
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
 
-class CustomListModel(QStandardItemModel):
+class CustomItemModel(QStandardItemModel):
     def __init__(self,parent=None):
-        super(CustomListModel,self).__init__()
+        super(CustomItemModel,self).__init__()
+        self.setColumnCount(4)
         pass
 
-class CustomListView(QListView):
+class CustomListView(QTableView):
     def __init__(self,parent=None):
         super(CustomListView,self).__init__()
-        self.model = CustomListModel(self)
+        self.model = CustomItemModel(self)
 
 
 class CustomListItem(QStandardItem):
     def __init__(self,parent=None):
         super(CustomListItem,self).__init__()
         pass
+        # self.initLayout()
+
+    def initLayout(self):
+        self.vLayout = QtWidgets.QVBoxLayout()
+        self.setLayout(self.vLayout)
+
+    def setValues(self,symDict):
+        for key,val in symDict.items():
+            tempWidget = QtGui.QLabel()
+            tempWidget.setText(val)
+            self.vLayout.addwidget(tempWidget)
 
 class ParameterGrid(QWidget):
     def __init__(self,parent=None):
         super(ParameterGrid,self).__init__(parent=parent)
         # self.initVars()
+        self.parent=parent
         self.initUI()
 
     def initVars(self):
@@ -55,37 +68,45 @@ class ParameterGrid(QWidget):
         self.setLayout(mainLayout)
 
     def updateSymbol(self,text):
-        pass
-        # self.parent.setSymbol(text)
+        self.parent.setSymbol(text)
 
     def updateStart(self,text):
-        pass
-        # self.parent.setStart(text)
+        self.parent.setStart(text)
 
     def updateEnd(self,text):
-        pass
-        # self.parent.setEnd(text)
+        self.parent.setEnd(text)
 
 class NewsList(CustomListView):
     def __init__(self,parent=None):
         super(NewsList,self).__init__(parent=parent)
         self.initUI()
-        self.fillModel()
-        # self.show()
-
-    def fillModel(self):
-        newsList = Newser.getStockNewsDict(self=Newser,symbol='aapl')
-
-        for item in newsList:
-            newItem = CustomListItem()#item['source'])
-            newItem.setText(item['source'])
-            self.model.appendRow(newItem)
-
+        self.stocks = ['aapl','googl','ntfx','fb','amzn','tsla','intc','nvda','ibm','amd','chgg','msft','vsat','mu','el','aeiq']
+        self.fillModel('aapl')
         self.setModel(self.model)
 
+        # self.show()
+
+    def update(self,symbol):
+        if symbol in self.stocks:
+            self.fillModel(symbol)
+
+    def fillModel(self,symbol):
+        newsList = Newser.getStockNewsDict(self=Newser,symbol=symbol)
+        self.model.clear()
+        for row,item in enumerate(newsList):
+            itemList=[]
+            col=0
+            print('\n')
+            print(row)
+            for key,val in item.items():
+                print(key)
+                newItem = CustomListItem()
+                newItem.setText(str(val))
+                self.model.setItem(row,col,newItem)
+                col+=1
 
     def initUI(self):
-        self.model = CustomListModel(self)
+        self.model = CustomItemModel(self)
 
 class DataPlot(QWidget):
     def __init__(self):
@@ -101,12 +122,20 @@ class MainLayout(QtWidgets.QMainWindow):
         self.initLayout()
         print('end')
 
-    # def setSymbol(text):
-    #     self.symbol=text
-    # def setStart(text):
-    #     self.start=text
-    # def setEnd(text):
-    #     self.end=text
+    def updateNews(self,symbol):
+        self.News.update(symbol)
+
+    def setSymbol(self,text):
+        self.symbol=text
+        self.updateNews(text)
+
+    def setStart(text):
+        self.start=text
+        # self.updateNews()
+
+    def setEnd(text):
+        self.end=text
+        # self.updateNews()
 
     def initLayout(self):
         self.grid.addWidget(self.Parameters,0,0)
