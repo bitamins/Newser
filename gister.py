@@ -2,7 +2,7 @@ import sys
 import logging
 from newser import Newser
 from PyQt5 import QtWidgets, QtGui
-from PyQt5.QtWidgets import QWidget, QLabel, QLineEdit, QListView, QTableView, QTextEdit, QGridLayout
+from PyQt5.QtWidgets import QWidget, QLabel, QLineEdit, QListView, QTableView, QTextEdit, QGridLayout, QHeaderView
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
 
 class CustomItemModel(QStandardItemModel):
@@ -80,6 +80,7 @@ class NewsList(CustomListView):
     def __init__(self,parent=None):
         super(NewsList,self).__init__(parent=parent)
         self.initUI()
+        self.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.stocks = ['aapl','googl','ntfx','fb','amzn','tsla','intc','nvda','ibm','amd','chgg','msft','vsat','mu','el','aeiq']
         self.fillModel('aapl',5)
         self.setModel(self.model)
