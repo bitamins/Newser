@@ -1,4 +1,4 @@
-from gister import MainLayout
+from lister import MainLayout
 import logging
 import logging.config
 from PyQt5 import QtWidgets
