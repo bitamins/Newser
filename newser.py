@@ -2,10 +2,12 @@ from bs4 import BeautifulSoup as BS
 import bs4
 import urllib.request
 import re
+from gister import Gister
 
 class Newser():
-    def __init__():
-        pass
+    def __init__(self):
+        self.sourceClassDict = dict()
+        self.sourceClassDict['fool'] = {"class":"usmf-new article-body"}
 
     def getRSSSoup(self,symbol,num):
         """Returns a soup object for the RSS of a stocl symbol"""
@@ -30,6 +32,8 @@ class Newser():
     def getRSSList(self,soup):
         """Returns a list of dictionaries with stock news information"""
         dictList = list()
+        sourceClassDict = dict()
+        sourceClassDict['fool'] = {"class":"usmf-new article-body"}
         for index,item in enumerate(soup.findAll('item')):
             tempDict = dict()
             link = self.getLink(self,item)
@@ -38,6 +42,11 @@ class Newser():
             tempDict['date'] = item.find('pubdate').text
             tempDict['title'] = item.find('title').text
             tempDict['link'] = link
+            if tempDict['source'] == 'www.fool.com':
+                art_text = self.getArticleText(self,tempDict['link'],sourceClassDict['fool'])
+                tempDict['score'] = Gister.get_sentiment(self,art_text)
+            else:
+                tempDict['score'] = 0
             dictList.append(tempDict)
         return dictList
 
@@ -56,6 +65,11 @@ class Newser():
         r = urllib.request.urlopen(request).read()
         soup = BS(r,"lxml")
         return soup.find('section',aClass).text
+
+    def getSentiment(self,article):
+        """scores the sentiment of a news article string"""
+        score = Gister.get_sentiment(article)
+        return score
 
     def getStockNewsDict(self,symbol,num):
         soup = self.getRSSSoup(self,symbol,num)
