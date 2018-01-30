@@ -1,12 +1,20 @@
 The purpose of this program is to consume news about a stock symbol from the google RSS feed and provide sentiment analysis on consumed news.
 
+To run:
+python lister.py
+
+Dependencies:
+bs4
+PyQt5
+
+Built with:
+python 3.5.2
+
 This program can currently:
 - Organize google stock RSS feed information
 - Connect to the motley fool website
 - Scrape the article from the connected website
 - Added simple GUI
-
-![newser](https://user-images.githubusercontent.com/22183294/32539309-dcd1d7a4-c41d-11e7-9221-0ebde536b9b4.JPG)
 
 To do:
 - Sentiment analysis of article(looking at google natural language processing api)
