@@ -1,5 +1,10 @@
 The purpose of this program is to consume news about a stock symbol from the google RSS feed and provide sentiment analysis on consumed news.
 
+<p>
+![newser_pic](https://user-images.githubusercontent.com/22183294/35582771-9e397650-05a4-11e8-9336-89b6b28c42af.png)
+![ScreenShot](/pics/Newser_pic.png)
+</p>
+
 To run:
 python lister.py
 
